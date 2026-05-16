@@ -1,0 +1,92 @@
+# Student-record-management-system
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+class Student {
+public:
+    int rollNo;
+    string name;
+    float marks;
+
+    void input() {
+        cout << "Enter Roll Number: ";
+        cin >> rollNo;
+        cin.ignore();
+
+        cout << "Enter Name: ";
+        getline(cin, name);
+
+        cout << "Enter Marks: ";
+        cin >> marks;
+    }
+
+    void display() {
+        cout << "\nRoll No: " << rollNo;
+        cout << "\nName: " << name;
+        cout << "\nMarks: " << marks << endl;
+    }
+};
+
+void saveStudent(Student s) {
+    ofstream file("students.txt", ios::app);
+
+    file << s.rollNo << endl;
+    file << s.name << endl;
+    file << s.marks << endl;
+
+    file.close();
+}
+
+void displayAllStudents() {
+    ifstream file("students.txt");
+
+    Student s;
+
+    while (file >> s.rollNo) {
+        file.ignore();
+        getline(file, s.name);
+        file >> s.marks;
+
+        s.display();
+    }
+
+    file.close();
+}
+
+int main() {
+    int choice;
+    Student s;
+
+    do {
+        cout << "\n===== Student Record Management System =====";
+        cout << "\n1. Add Student";
+        cout << "\n2. Display Students";
+        cout << "\n3. Exit";
+        cout << "\nEnter Choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            s.input();
+            saveStudent(s);
+            cout << "\nStudent Record Saved!\n";
+            break;
+
+        case 2:
+            displayAllStudents();
+            break;
+
+        case 3:
+            cout << "\nExiting Program...\n";
+            break;
+
+        default:
+            cout << "\nInvalid Choice!\n";
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
